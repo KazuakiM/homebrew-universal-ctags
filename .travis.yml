@@ -6,21 +6,20 @@
 # @url: https://docs.travis-ci.com/user/reference/windows/
 # @url: https://docs.brew.sh/Installation
 # @url: https://docs.brew.sh/Homebrew-on-Linux
-#
-language: ruby
+language: shell
 
-sudo: false
-
-matrix:
+jobs:
   include:
     - os: osx
-      osx_image: xcode11.4
+      osx_image: xcode11.5
     - os: linux
       dist: trusty
+    - os: windows
   fast_finish: true
 
 before_install:
   - |
+    /bin/bash -c "if [[ $TRAVIS_OS_NAME = 'windows' ]]; then bash; fi"
     if [[ $TRAVIS_OS_NAME != 'osx' ]]; then
       /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
       test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
@@ -28,9 +27,9 @@ before_install:
       test -r ~/.bash_profile && echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.bash_profile
       echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.profile
 
-      #ErrorFix: Install Perl
+      #ErrorFix: Install Perl, Python
       # @see https://travis-ci.org/github/KazuakiM/homebrew-universal-ctags/jobs/683777821
-      brew install perl -s
+      brew install perl docutils -s
     fi
 
 install:
