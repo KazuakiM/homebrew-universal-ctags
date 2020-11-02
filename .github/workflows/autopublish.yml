@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
   schedule:
     # Once every hour
-    - cron: '5 * * * *'
+    - cron: '30 0 * * 0'
 
 env:
   HOMEBREW_FORCE_HOMEBREW_ON_LINUX: 1
@@ -14,6 +14,7 @@ env:
 jobs:
   autopublish:
     if: github.repository == 'KazuakiM/homebrew-universal-ctags'
+    #if: github.repository == 'universal-ctags/homebrew-universal-ctags'
     runs-on: ubuntu-latest
     steps:
       - name: Set up Homebrew
